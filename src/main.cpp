@@ -38,6 +38,7 @@ int received_data;
 String data;
 bool controlLeft = false;
 bool controlRight = false;
+bool controlStable = false;
 
 // Prototypes
 void Robot_Move(int velr, int vell);
@@ -48,8 +49,9 @@ void backwards();
 void right();
 void left();
 void remote_control();
+void stable();
 void automatic();
-void turn();
+void selfTurn();
 
 void Robot_Move(int velr, int vell)
 {
@@ -106,7 +108,6 @@ void Robot_Move(int velr, int vell)
 
 }
 
-// Done
 void read_Sensors()
 {
     if (Serial.available() > 0) // Test if serial has something to read or not
@@ -150,7 +151,6 @@ void read_Sensors()
     }
 }
 
-// Done
 void readings()
 {
     // Move Up
@@ -292,25 +292,37 @@ void remote_control()
     // }
 }
 
+void stable()
+{
+
+    if (Left_Sensor == 1.0 && Right_Sensor == 1.0 && controlStable == false)
+    {
+        Robot_Move(9, 9);
+        // Serial.print("Stable");
+        controlStable = true;
+    }
+
+}
+
 // Work In Progress
 void automatic ()
 {
 
-        if (Left_Sensor < 0.30 && controlLeft == false)
-        {
-            Robot_Move(4, 5);
-            controlLeft = true;
-        }
+    if (Left_Sensor < 0.30 && controlLeft == false)
+    {
+        Robot_Move(4, 5);
+        controlLeft = true;
+    }
 
-        if (Right_Sensor < 0.30 && controlRight == false)
-        {
-            Robot_Move(5, 4);
-            controlRight = true;
-        }
+    if (Right_Sensor < 0.30 && controlRight == false)
+    {
+        Robot_Move(5, 4);
+        controlRight = true;
+    }
 
 }
 
-void turn()
+void selfTurn()
 {
 
 }
@@ -334,11 +346,7 @@ void loop()
 
     remote_control();
     read_Sensors();
-    // automatic();
-    // Robot_Move(5, 5);
-    // while (1)
-    // {
-
-    // }
+    stable();
+    automatic();
 
 }
