@@ -38,6 +38,7 @@ int received_data;
 String data;
 bool controlLeft = false;
 bool controlRight = false;
+bool controlTurn = false;
 bool controlStable = false;
 
 // Prototypes
@@ -110,7 +111,7 @@ void Robot_Move(int velr, int vell)
 
 void read_Sensors()
 {
-    if (Serial.available() > 0) // Test if serial has something to read or not
+    if (Serial.available() > 0)
     {
         received_data = Serial.read();
         if (char (received_data) == 'L')
@@ -295,36 +296,58 @@ void remote_control()
 void stable()
 {
 
-    if (Left_Sensor == 1.0 && Right_Sensor == 1.0 && controlStable == false)
+    if (Left_Sensor == 0.35 && Right_Sensor == 0.35 && controlStable == false)
     {
         Robot_Move(9, 9);
         // Serial.print("Stable");
+        controlLeft = false;
+        controlRight = false;
         controlStable = true;
     }
 
 }
 
-// Work In Progress
 void automatic ()
 {
-
-    if (Left_Sensor < 0.30 && controlLeft == false)
+    if (received_data == 0)
     {
-        Robot_Move(4, 5);
-        controlLeft = true;
-    }
+        Left_Sensor = 0.35;
+        Right_Sensor = 0.35;
 
-    if (Right_Sensor < 0.30 && controlRight == false)
-    {
-        Robot_Move(5, 4);
-        controlRight = true;
+    } else {
+        // Turn right
+        if (Left_Sensor < 0.25 && Left_Sensor > 0.2 && controlLeft == false)
+        {
+            Robot_Move(4, 5);
+            controlLeft = true;
+            controlStable = false;
+            controlRight = false;
+        }
+
+        // Turn left
+        if (Right_Sensor < 0.25 && Right_Sensor > 0.2 && controlRight == false)
+        {
+            Robot_Move(5, 4);
+            controlRight = true;
+            controlStable = false;
+            controlLeft = false;
+        }
     }
 
 }
 
 void selfTurn()
 {
-
+    if (Left_Sensor <= 0.175 && Right_Sensor <= 0.175 && controlTurn == false)
+    {
+        Robot_Move(0, 0);
+        delay(100);
+        Robot_Move(2, -2);
+        controlTurn = true;
+        delay(2250);
+        controlLeft = false;
+        controlRight = false;
+    }
 }
 
 void setup()
@@ -343,10 +366,13 @@ void setup()
 
 void loop()
 {
-
-    remote_control();
     read_Sensors();
-    stable();
+    remote_control();
+    if (SW_UP_Status == 1)
+    {
+        stable();
+    }
+    selfTurn();
     automatic();
 
 }
