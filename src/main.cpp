@@ -295,7 +295,6 @@ void remote_control()
 
 void stable()
 {
-
     if (Left_Sensor == 0.35 && Right_Sensor == 0.35 && controlStable == false)
     {
         Robot_Move(9, 9);
@@ -316,16 +315,25 @@ void automatic ()
 
     } else {
         // Turn right
-        if (Left_Sensor < 0.25 && Left_Sensor > 0.2 && controlLeft == false)
+        controlLeft = true;
+        controlStable = false;
+        controlRight = false;
+        if (Left_Sensor < 0.2 && Left_Sensor > 0.12 && controlLeft == false)
         {
-            Robot_Move(4, 5);
-            controlLeft = true;
-            controlStable = false;
-            controlRight = false;
+            if (Left_Sensor < 0.25 && Left_Sensor > 0.2 && controlLeft == false)
+            {
+                Robot_Move(4, 5);
+            } else {
+                Robot_Move(3, 5);
+
+                controlLeft = true;
+                controlStable = false;
+                controlRight = false;
+            }
         }
 
         // Turn left
-        if (Right_Sensor < 0.25 && Right_Sensor > 0.2 && controlRight == false)
+        if (Right_Sensor < 0.25 && Right_Sensor > 0.12 && controlRight == false)
         {
             Robot_Move(5, 4);
             controlRight = true;
@@ -333,7 +341,6 @@ void automatic ()
             controlLeft = false;
         }
     }
-
 }
 
 void selfTurn()
@@ -344,7 +351,9 @@ void selfTurn()
         delay(100);
         Robot_Move(2, -2);
         controlTurn = true;
-        delay(2250);
+        delay(2500);
+        Robot_Move(9, 9);
+        automatic();
         controlLeft = false;
         controlRight = false;
     }
@@ -372,7 +381,7 @@ void loop()
     {
         stable();
     }
-    selfTurn();
     automatic();
+    selfTurn();
 
 }
