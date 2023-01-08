@@ -7,4 +7,5 @@
 include/
 lib/
 test/
-.platformio.ini
+.ini
+.gitignore
