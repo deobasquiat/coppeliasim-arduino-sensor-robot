@@ -1,6 +1,6 @@
 # Introduction
 
-Welcome to the Sensor Robot repository! This repository contains the logic for a simulated car robot that can navigate a labyrinth using sensors. All the physics simulation should be done on CoppeliaSim.
+Welcome to the Sensor Robot repository! This repository contains the logic for a simulated robotic vehicle capable of navigating a labyrinth using sensors on CoppeliaSim
 
 ## Main Components
 
