@@ -100,13 +100,6 @@ void Robot_Move(int velr, int vell)
         }
     }
 
-    // Robot_Speed.sRight = velr;
-    // Robot_Speed.sLeft = vell;
-
-    // Serial.print("m");
-    // Serial.print(Robot_Speed.sRight);
-    // Serial.print(Robot_Speed.sLeft);
-
 }
 
 void read_Sensors()
@@ -120,14 +113,12 @@ void read_Sensors()
             {
                 if (Serial.available() > 0) {
                     received_data = Serial.read();
-                    // sensor_array[i] = char(received_data);
                     data += char(received_data);
                 } else {
                     i--;
                 }
             }
             Left_Sensor = data.toDouble();
-            // Serial.print(Left_Sensor);
             data = "";
 
         }
@@ -138,14 +129,12 @@ void read_Sensors()
             {
                 if (Serial.available() > 0) {
                     received_data = Serial.read();
-                    // sensor_array[i] = char(received_data);
                     data += char(received_data);
                 } else {
                     i--;
                 }
             }
             Right_Sensor = data.toDouble();
-            // Serial.print(Right_Sensor);
             data = "";
 
         }
@@ -225,13 +214,6 @@ void remote_control()
     if (SW_UP_Status == 1)
     {
         forwards();
-        // Serial.write(Forward, 2);
-        // Robot_Move(5, 5);
-        // while (SW_UP_Status == 1)
-        // {
-        //     // readings();
-        //     SW_UP_Status = digitalRead(SW_UP);
-        // }
     }
 
     // Move Right
@@ -240,14 +222,6 @@ void remote_control()
     if (SW_RIGHT_Status == 1)
     {
         right();
-        // Serial.write(Right, 2);
-        // Robot_Move(4, 5);
-        // while (SW_RIGHT_Status == 1)
-        // {
-        //     // readings();
-        //     SW_RIGHT_Status = digitalRead(SW_RIGHT);
-        // }
-        // Robot_Move(5, 5);
     }
 
     // Move Left
@@ -256,14 +230,6 @@ void remote_control()
     if (SW_LEFT_Status == 1)
     {
         left();
-        // Serial.write(Left, 2);
-        // Robot_Move(5, 4);
-        // while (SW_LEFT_Status == 1)
-        // {
-        //     // readings();
-        //     SW_LEFT_Status = digitalRead(SW_LEFT);
-        // }
-        // Robot_Move(5, 5);
     }
 
     // Move Down
@@ -272,25 +238,7 @@ void remote_control()
     if (SW_DOWN_Status == 1)
     {
         backwards();
-        // Serial.write(Backwards, 2);
-        // Robot_Move(-5, -5);
-        // while (SW_DOWN_Status == 1)
-        // {
-        //     // readings();
-        //     SW_DOWN_Status = digitalRead(SW_DOWN);
-        // }
     }
-    // if (SW_DOWN_Status == 1 && digitalRead(SW_UP) == 1)
-    // {
-    //     Robot_Move(0, 0);
-    //     downwards();
-    // }
-
-    // if (SW_UP_Status == 1 && digitalRead(SW_DOWN) == 1)
-    // {
-    //     Robot_Move(0, 0);
-    //     upwards();
-    // }
 }
 
 void stable()
@@ -298,7 +246,6 @@ void stable()
     if (Left_Sensor == 0.35 && Right_Sensor == 0.35 && controlStable == false)
     {
         Robot_Move(9, 9);
-        // Serial.print("Stable");
         controlLeft = false;
         controlRight = false;
         controlStable = true;
